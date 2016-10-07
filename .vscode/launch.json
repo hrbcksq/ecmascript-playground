@@ -4,7 +4,7 @@
             "name": "Launch",
             "type": "node",
             "request": "launch",
-            "program": "${workspaceRoot}/node/index.js",
+            "program": "${workspaceRoot}/node/emitter/emitter-test.js",
             "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
