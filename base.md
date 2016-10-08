@@ -25,3 +25,9 @@ Exposing only the properties and methods you want via an returned objects.
 
 A very common used and clean way to structure and protect code with modules.
 
+# Non-blocking 
+Doing other things without stopping your programming from running, this is made possible by Node's doing things asynchronously.
+
+> Event Driven Non-Blocking I/O in V8 Javascript.
+
+Javascript is single thread and synchronous, but V8 and nodejs is asynchronous.
