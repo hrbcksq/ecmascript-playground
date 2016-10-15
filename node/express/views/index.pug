@@ -7,9 +7,9 @@ body
     p= message
     form(action="/person", method="post")
         p Firstname:
-        input(type="text", name="firstname")
+        input.firstname(type="text", name="firstname")
         p Lastname:
-        input(type="text", name="lastname")
+        input.lastname(type="text", name="lastname")
         br
         button Submit person
     
