@@ -3,5 +3,11 @@ module.exports = {
     address: 'localhost',
     static: `${__dirname}\\public`,
     viewEngine: 'pug',
-    viewsPath: `${__dirname}\\views`
+    viewsPath: `${__dirname}\\views`,
+    databaseCredentials: {
+        host: 'localhost',
+        user: 'root',
+        password: 'ascent',
+        database: 'pike'
+    }
 }

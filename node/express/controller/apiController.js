@@ -2,39 +2,65 @@ var _ = require('lodash');
 var uuid = require('node-uuid');
 var bodyParser = require('body-parser');
 
-module.exports = function(app, storage) {
+module.exports = function(app, storage, logger) {
     //json body parser
     app.use(bodyParser.json());
 
+    //error handler
+    var errorHandler = function(res) {
+        return function(err) {
+            logger.log(err);
+            res.status(500);
+        };        
+    }
+
     //Simple api
     app.get('/api', (req, res) => {
-        res.json(storage);
+        storage.getAll() 
+            .then((result) => {
+                // console.log(result);
+                res.json(result)
+                res.status(200);
+            })
+            .catch(errorHandler(res));        
     });
 
     app.get('/api/:id', (req, res) => {
         var id = req.params.id;
-        res.json(storage.selector(id));
+        storage.getById(id)
+            .then((result) => {
+                res.json(result);
+                res.status(200);
+            })
+            .catch(errorHandler(res));        
     });
 
     app.post('/api', (req, res) => {
         var item = req.body;
-        item.id = uuid.v4();
-        storage.push(item)
-        res.status(200);
-        res.end();
+        storage.create()
+            .then(() => {
+                console.log('created item: ' + JSON.stringify(item));
+                res.status(200);
+            })
+            .catch(errorHandler(res));
     });
 
     app.delete('/api', (req, res) => {
         var id = req.body.id;
-        _.remove(storage, (item) => item.id === id);
-        res.status(200).end();
+        storage.delete(id)
+            .then(() => {
+                console.log('deleted item with ID:' + id);
+                res.status(200);
+            })
+            .catch(errorHandler(res));               
     });
 
     app.put('/api', (req, res) => {
-        var input = req.body;
-        var index = _.findIndex(storage, (item) => item.id === input.id);
-        storage[index] = input;
-        res.status(200);
-        res.end();
+        var input = req.body;        
+        storage.update(item)
+            .then(() => {
+                console.log('created')
+            })
+            .catch(errorHandler(res));
     });    
 }
