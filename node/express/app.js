@@ -2,12 +2,15 @@ var config = require('./config'),
     express = require('express'),
     apiController = require(`./controller/apiController`),
     htmlController = require(`./controller/htmlController`),
-    storageProvider = require(`./service/storage`),
+    // sqlProvider = require(`./service/sqlProvider`),
+    mongoProvider = require('./service/mongoProvider'),
     loggerProvider = require(`./service/logging`);
 
 var app = express();
 var logger = loggerProvider();
-var repository = storageProvider(config.databaseCredentials);
+// var repository = sqlProvider(config.sqlDbConnectionSettings);
+
+var repository = mongoProvider(config.mongoDbConnectionSettings);
 
 //View engine
 app.set('view engine', config.viewEngine);

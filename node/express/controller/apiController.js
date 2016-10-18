@@ -8,9 +8,9 @@ module.exports = function(app, storage, logger) {
 
     //error handler
     var errorHandler = function(res) {
-        return function(err) {
+        return function (err) {
             logger.log(err);
-            res.status(500);
+            res.status(500).end();
         };        
     }
 
@@ -20,9 +20,9 @@ module.exports = function(app, storage, logger) {
             .then((result) => {
                 // console.log(result);
                 res.json(result)
-                res.status(200);
+                res.status(200).end();                
             })
-            .catch(errorHandler(res));        
+            .catch(errorHandler(res));
     });
 
     app.get('/api/:id', (req, res) => {
@@ -30,17 +30,17 @@ module.exports = function(app, storage, logger) {
         storage.getById(id)
             .then((result) => {
                 res.json(result);
-                res.status(200);
+                res.status(200).end();
             })
             .catch(errorHandler(res));        
     });
 
     app.post('/api', (req, res) => {
         var item = req.body;
-        storage.create()
+        storage.create(item)
             .then(() => {
                 console.log('created item: ' + JSON.stringify(item));
-                res.status(200);
+                res.status(200).end();
             })
             .catch(errorHandler(res));
     });
@@ -50,16 +50,17 @@ module.exports = function(app, storage, logger) {
         storage.delete(id)
             .then(() => {
                 console.log('deleted item with ID:' + id);
-                res.status(200);
+                res.status(200).end();
             })
             .catch(errorHandler(res));               
     });
 
     app.put('/api', (req, res) => {
         var input = req.body;        
-        storage.update(item)
+        storage.update(input)
             .then(() => {
-                console.log('created')
+                console.log('updated')
+                res.status(200).end();
             })
             .catch(errorHandler(res));
     });    

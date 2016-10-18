@@ -88,7 +88,7 @@ var executeWithConnection = function(credentials, request){
     });    
 }
 
-module.exports = function(credentials) {
+module.exports = function(credentials) { 
     var execWithCredentials = function(query) {        
         return executeWithConnection(credentials, query);        
     }
