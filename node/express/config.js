@@ -11,5 +11,4 @@ module.exports = {
         database: 'pike'
     },
     mongoDbConnectionSettings: 'mongodb://<username>:<password>@ds059496.mlab.com:59496/shared'
-
 }

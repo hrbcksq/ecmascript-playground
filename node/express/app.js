@@ -8,9 +8,8 @@ var config = require('./config'),
 
 var app = express();
 var logger = loggerProvider();
-// var repository = sqlProvider(config.sqlDbConnectionSettings);
-
 var repository = mongoProvider(config.mongoDbConnectionSettings);
+// var repository = sqlProvider(config.sqlDbConnectionSettings);
 
 //View engine
 app.set('view engine', config.viewEngine);
@@ -27,7 +26,6 @@ app.use((req, res, next) => {
 //Controllres
 apiController(app, repository, logger);
 htmlController(app, repository, logger);
-
 
 //Start
 app.listen(config.port, config.address, () => {

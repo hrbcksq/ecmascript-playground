@@ -52,8 +52,7 @@ module.exports = function(connectionString) {
         'delete'  : (id)   => personOperator(actions.findByIdAndRemove, id),
         'update'  : (item) => personOperator(actions.findByIdAndUpdate, item),
         'create'  : (item) => personOperator(actions.save, item) 
-    };
-    
+    };    
 };
 
 
