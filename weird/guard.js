@@ -1,29 +1,40 @@
 var guard = {
-  guard: function(x) {
-    if (!this.test(x)) { 
-      throw new TypeError('awaiting ' + this);
+  guard(value) {
+    if (!this.test(value)) {
+      throw new Error('Invalid type')
+    } else {
+      return true;
     }
+  },
+  or(external) {
+    var result = Object.create(guard);
+    result.test = (value) => {
+      return external.test(value) || this.test(value)
+    }
+    return result;
   }
-}
-
-var uint32 = Object.create(guard);
-uint32.test = function(x) {
-  return typeof x === 'number' && x === (x >>> 0);
-};
-uint32.toString = function() {
-  return 'uint32';
-}
-
-var arrayLike = Object.create(guard);
-arrayLike.test = function(x) {
-  return typeof x === 'object' && x && 
-    uint32.test(x.length);
 };
 
-arrayLike.toString = function() {
-  return 'array-like object';
-}
 
-console.log(uint32(1233.234).guard());
-console.log(uint32(1233).guard());
-console.log(uint32(NaN).guard());
+function uint32() {
+  var instance = this instanceof uint32 ? this : Object.create(uint32.prototype);
+  instance.test = (value) => {
+    return typeof value === 'number' && value === (value >>> 0);
+  }
+  instance.toString = () => 'uint32';
+  return instance;
+}
+uint32.prototype = Object.create(guard);
+
+function arrayLike() {
+  var instance = this instanceof arrayLike ? this : Object.create(uint32.prototype);
+  instance.test = (value) => {
+    return typeof value === 'object' && value && uint32().test(value.length);
+  }
+  return instance;
+}
+arrayLike.prototype = Object.create(guard);
+
+console.log(uint32().or(arrayLike()).guard([1, 2]));
+console.log(uint32().or(arrayLike()).guard(1));
+console.log(uint32().or(arrayLike()).guard(1.4));
